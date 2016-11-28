@@ -5,8 +5,8 @@
 static unsigned int index;
 unsigned int batteryValue;
 unsigned int currentValue;
-volatile unsigned int A0results[NUM_OF_RESULTS];
-volatile unsigned int A2results[NUM_OF_RESULTS];
+volatile unsigned int A0results[8];
+volatile unsigned int A2results[8];
 void initMultiMeter() {
     WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
     index = 0; //Initialize index

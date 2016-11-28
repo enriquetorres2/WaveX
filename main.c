@@ -1,5 +1,8 @@
 #include <msp430.h> 
-
+#include "magnetometer.h"
+#include "multimeter.h"
+#include "proximity.h"
+#include "SerialBluetooth.h"
 /*
  * main.c
  */
