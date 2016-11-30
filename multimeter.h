@@ -4,10 +4,12 @@
 #define MULTIMETER_HEADER_VERSION 1
 
 //Generated Values
-extern unsigned int batteryValue;
-extern unsigned int currentValue;
+extern int battery;
+extern unsigned int current;
 
 // Initialize Multimeter
 void initMultiMeter();
+// Sample measurements
+void doSamples();
 
 #endif /* MULTIMETER_H_ */

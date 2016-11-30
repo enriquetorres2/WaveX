@@ -40,7 +40,7 @@ void initProximitySersors(){
 	TA2CTL |= TACLR; // Clear TA2CLK
 	TA2CTL = TASSEL_1+MC_2; //Start Timer A2 with ACLK source (32,768 Hz) and continuous mode.
 }
-void checkProximity(){
+void updateProximity(){
 	int val1 = buff1[0]-buff1[1]; // Calculate the difference between negative edge and positive edge of the echo signal from right sensor.
 	if(val1 <= SIDE_RANGE){ // Compare difference with the range.
 		rightFlag |= BIT0; //Set RightFlag
@@ -62,6 +62,10 @@ void checkProximity(){
 	TA2R = 0; // Clear TA2 counter
 }
 
+#pragma vector=TIMER0_A0_VECTOR
+__interrupt void WriteValues(void){
+	updateProximity(); // Update flags.
+}
 #pragma vector = TIMER2_A0_VECTOR
 __interrupt void Sensors(void){ // Interrupt for right sensor.
 	if(TA2CCTL0 & CM_1){ // If set for rising edge

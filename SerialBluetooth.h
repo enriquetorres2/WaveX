@@ -24,6 +24,9 @@
 
 #define SERIALBLUETOOTH_HEADER_VERSION 1
 
+// Buffer
+extern unsigned int BTBuffer;
+
 // BT connected flag
 extern unsigned int BTConnected;
 // Initialize BT module

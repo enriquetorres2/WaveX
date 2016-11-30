@@ -1,6 +1,10 @@
 #include <msp430.h>
 #include "math.h"
 
+#define X_COMPONENT_OFFSET -128
+#define Y_COMPONENT_OFFSET -335
+#define RADIAN_DEGREES_FACTOR 180.0/3.141593
+
 float sensVal[3];
 int buff;									//input buffer
 float orientation;
@@ -54,20 +58,92 @@ void i2cSetup(){
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
-
-
-void startCompass(){
-  receiveFlag = 1;
-  i2cSetup();
-}
-
-float getOrientation(){
-	tallyOrientation();
-	calculateOrientation();
+void initCompass(){
+	UCB0I2CSA = 0x68;// Slave Address for MPU
+	//Each block represent a transaction between the MCU and the MPU-9265
+	TXByteCtr = 2;
+	Rx = 0;
+	__no_operation();//Reset system 1
+	transmit(0x006B);
 	__no_operation();
-	return orientation;
-}
+	__delay_cycles(10);
 
+	TXByteCtr = 2;
+	Rx = 0;
+	__no_operation();//Reset system 2
+	transmit(0x006C);
+	__no_operation();
+	__delay_cycles(10);
+
+	TXByteCtr = 2;
+	Rx = 0;
+	__no_operation();//Set bypass to access magnetometer from MCU
+	transmit(0x0237);
+	__no_operation();
+
+	UCB0I2CSA = 0x0C;// Slave Address for magnetometer
+
+	TXByteCtr = 2; // Power down magnetometer
+	__no_operation();
+	transmit(0x000A);
+	__no_operation();
+	__delay_cycles(10);
+
+	TXByteCtr = 2;
+	__no_operation();//Enter magnetometer fuse Fuse ROM access Mode
+	transmit(0x0F0A);
+	__no_operation();
+	__delay_cycles(10);
+
+	TXByteCtr = 1;
+	receiveFlag = 0;
+	__no_operation();//Read x calibration value
+	transmit(0x10);
+	__no_operation();
+	Rx = 1;
+	__no_operation();
+	receive();
+	__no_operation();
+
+	sensVal[0]=(float)((buff-128)/256.0)+1.0; // Record x calibration value
+
+	TXByteCtr = 1;
+	receiveFlag = 0;
+	__no_operation();//Read y calibration value
+	transmit(0x11);
+	__no_operation();
+	Rx = 1;
+	__no_operation();
+	receive();
+	__no_operation();
+
+	sensVal[1]=(float)((buff-128)/256.0)+1.0; // Record y calibration value
+
+	TXByteCtr = 1;
+	receiveFlag = 0;
+	__no_operation();//Read z calibration value
+	transmit(0x12);
+	__no_operation();
+	Rx = 1;
+	__no_operation();
+	receive();
+	__no_operation();
+
+	sensVal[2]=(float)((buff-128)/256.0)+1.0; // Record z calibration value
+
+	receiveFlag = 1;
+	TXByteCtr = 2; // Power down magnetometer
+	__no_operation();
+	transmit(0x000A);
+	__no_operation();
+	__delay_cycles(10);
+
+	TXByteCtr = 2;
+	__no_operation();//16 bit output and 8hz measurement mode
+	transmit(0x120A);
+	__no_operation();
+	__delay_cycles(10);
+}
 void tallyOrientation(){
 
 	x = 0;
@@ -176,13 +252,13 @@ void tallyOrientation(){
 	ay = ay >> 3;
 	az = az >> 3;
 
-	mx = (float)ax*(10.0*4912.0/32760.0)*sensVal[0] - 128.0; // Get actual x magnetometer value;
-	my = (float)ay*(10.0*4912.0/32760.0)*sensVal[1]- 335.0; // Get actual y magnetometer value;
+	mx = (float)ax*(10.0*4912.0/32760.0)*sensVal[0] + X_COMPONENT_OFFSET; // Get actual x magnetometer value;
+	my = (float)ay*(10.0*4912.0/32760.0)*sensVal[1] + Y_COMPONENT_OFFSET; // Get actual y magnetometer value;
 	mz = (float)az*(10.0*4912.0/32760.0)*sensVal[2];// - 125.0; // Get actual z magnetometer value;
 }
 void calculateOrientation(){
-	//For Calculate Orientation use de following formula
-	//derivered from the dot product
+	//For Calculate Orientation use the following formula
+	//derived from the dot product
 	//orientation = acos(x/sqrt((x*x)+(y*y)))
 
 	float mx2 = (long) mx*mx;
@@ -193,93 +269,19 @@ void calculateOrientation(){
 	if(my<=0) orientation = acosf(mx*nm);
 	else orientation = -1.0*acosf(mx*nm);
 	if(orientation == NAN) orientation = 0.0;
-	else orientation = orientation *180.0 / 3.141593;
+	else orientation = orientation *RADIAN_DEGREES_FACTOR;
 }
-void initCompass(){
-	UCB0I2CSA = 0x68;// Slave Address for MPU
-	//Each block represent a transaction between the MCU and the MPU-9265
-	TXByteCtr = 2;
-	Rx = 0;
-	__no_operation();//Reset system 1
-	transmit(0x006B);
-	__no_operation();
-	__delay_cycles(10);
 
-	TXByteCtr = 2;
-	Rx = 0;
-	__no_operation();//Reset system 2
-	transmit(0x006C);
-	__no_operation();
-	__delay_cycles(10);
+void startCompass(){
+  receiveFlag = 1;
+  i2cSetup();
+}
 
-	TXByteCtr = 2;
-	Rx = 0;
-	__no_operation();//Set bypass to access magnetometer from MCU
-	transmit(0x0237);
+float getOrientation(){
+	tallyOrientation();
+	calculateOrientation();
 	__no_operation();
-
-	UCB0I2CSA = 0x0C;// Slave Address for magnetometer
-
-	TXByteCtr = 2; // Power down magnetometer
-	__no_operation();
-	transmit(0x000A);
-	__no_operation();
-	__delay_cycles(10);
-
-	TXByteCtr = 2;
-	__no_operation();//Enter magnetometer fuse Fuse ROM access Mode
-	transmit(0x0F0A);
-	__no_operation();
-	__delay_cycles(10);
-
-	TXByteCtr = 1;
-	receiveFlag = 0;
-	__no_operation();//Read x calibration value
-	transmit(0x10);
-	__no_operation();
-	Rx = 1;
-	__no_operation();
-	receive();
-	__no_operation();
-
-	sensVal[0]=(float)((buff-128)/256.0)+1.0; // Record x calibration value
-
-	TXByteCtr = 1;
-	receiveFlag = 0;
-	__no_operation();//Read y calibration value
-	transmit(0x11);
-	__no_operation();
-	Rx = 1;
-	__no_operation();
-	receive();
-	__no_operation();
-
-	sensVal[1]=(float)((buff-128)/256.0)+1.0; // Record y calibration value
-
-	TXByteCtr = 1;
-	receiveFlag = 0;
-	__no_operation();//Read z calibration value
-	transmit(0x12);
-	__no_operation();
-	Rx = 1;
-	__no_operation();
-	receive();
-	__no_operation();
-
-	sensVal[2]=(float)((buff-128)/256.0)+1.0; // Record z calibration value
-
-	receiveFlag = 1;
-	TXByteCtr = 2; // Power down magnetometer
-	__no_operation();
-	transmit(0x000A);
-	__no_operation();
-	__delay_cycles(10);
-
-	TXByteCtr = 2;
-	__no_operation();//16 bit output and 8hz measurement mode
-	transmit(0x120A);
-	__no_operation();
-	__delay_cycles(10);
+	return orientation;
 }
 #pragma vector = USCI_B0_VECTOR
 __interrupt void USCI_B0_ISR(void){

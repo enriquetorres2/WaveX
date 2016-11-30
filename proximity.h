@@ -11,7 +11,5 @@ extern unsigned short frontFlag;
 // Initialize Proximity Sernsor
 void initProximitySersors();
 
-// Update proximity flags
-void checkProximity();
-
 #endif /* PROXIMITY_H_ */
+
