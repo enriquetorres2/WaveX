@@ -1,17 +1,17 @@
 #include <msp430.h>
 #include "math.h"
 
-#define X_COMPONENT_OFFSET -128
-#define Y_COMPONENT_OFFSET -335
+#define X_COMPONENT_OFFSET -215 //-128 Sensor 1
+#define Y_COMPONENT_OFFSET -335 //-335 Sensor 1
 #define RADIAN_DEGREES_FACTOR 180.0/3.141593
 
 float sensVal[3];
 int buff;									//input buffer
 float orientation;
 int receiveFlag;
-int x, ax;
-int y, ay;
-int z, az;
+int x;
+int y;
+int z;
 float mx;
 float my;
 float mz;
@@ -22,13 +22,13 @@ int Rx;
 void transmit(int word){						// Transmit to slave
 	Rx = 0;
 	TXData = word;
-    while (UCB0CTL1 & UCTXSTP);             // Ensure stop condition got sent
-    UCB0CTL1 |= UCTR + UCTXSTT;             // I2C TX, start condition
-    __bis_SR_register(LPM0_bits + GIE);     // Enter LPM0 w/ interrupts
+	while (UCB0CTL1 & UCTXSTP);             // Ensure stop condition got sent
+	UCB0CTL1 |= UCTR + UCTXSTT;             // I2C TX, start condition
+	__bis_SR_register(LPM0_bits + GIE);     // Enter LPM0 w/ interrupts
 }
 void receive(void){							// Receive from slave
 
-    Rx = 1;
+	Rx = 1;
 	__bic_SR_register(GIE);
 	while (UCB0CTL1 & UCTXSTP);             // Ensure stop condition got sent
 	UCB0CTL1 &= ~UCTR ;                     // Set UCTR for reading
@@ -44,15 +44,15 @@ void receive(void){							// Receive from slave
 
 void i2cSetup(){
 
-  P3SEL |= BIT0 + BIT1;                            // Assign I2C pins to USCI_B0
-  UCB0CTL1 |= UCSWRST;                      // Enable SW reset
-  UCB0CTL0 = UCMST + UCMODE_3 + UCSYNC;     // I2C Master, synchronous mode
-  UCB0CTL1 = UCSSEL_2 + UCSWRST;            // Use SMCLK, keep SW reset
-  UCB0BR0 = 12;                             // fSCL = SMCLK/12 = ~100kHz
-  UCB0BR1 = 0;
-  UCB0I2CSA = 0x68;                         // Slave Address is 12 for magnet
-  UCB0CTL1 &= ~UCSWRST;                     // Clear SW reset, resume operation
-  UCB0IE |= UCRXIE + UCTXIE;
+	P3SEL |= BIT0 + BIT1;                            // Assign I2C pins to USCI_B0
+	UCB0CTL1 |= UCSWRST;                      // Enable SW reset
+	UCB0CTL0 = UCMST + UCMODE_3 + UCSYNC;     // I2C Master, synchronous mode
+	UCB0CTL1 = UCSSEL_2 + UCSWRST;            // Use SMCLK, keep SW reset
+	UCB0BR0 = 12;                             // fSCL = SMCLK/12 = ~100kHz
+	UCB0BR1 = 0;
+	UCB0I2CSA = 0x68;                         // Slave Address is 12 for magnet
+	UCB0CTL1 &= ~UCSWRST;                     // Clear SW reset, resume operation
+	UCB0IE |= UCRXIE + UCTXIE;
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -148,74 +148,70 @@ void tallyOrientation(){
 	x = 0;
 	y = 0;
 	z = 0;
-	ax = 0;
-	ay = 0;
-	az = 0;
 
-	int i;
-	for (i = 0; i < 8; i++){
-		//initCompass();
-		//Each block represent a transaction between the MCU and the MPU-9265
-		TXByteCtr = 1;
-		Rx = 0;
-		__no_operation();//Read X High byte value
-		transmit(0x04);
-		__no_operation();
-		Rx = 1;
-		__no_operation();
-		receive();
-		__no_operation();
+	initCompass();
+	__delay_cycles(10000);
+	//Each block represent a transaction between the MCU and the MPU-9265
+	TXByteCtr = 1;
+	Rx = 0;
+	__no_operation();//Read X High byte value
+	transmit(0x04);
+	__no_operation();
+	Rx = 1;
+	__no_operation();
+	receive();
+	__no_operation();
 
-		x |= buff;
-		x = x << 8;
+	x |= buff;
+	x = x << 8;
 
-		TXByteCtr = 1;
-		Rx = 0;
-		__no_operation();//Read X Low byte value
-		transmit(0x03);
-		__no_operation();
-		Rx = 1;
-		__no_operation();
-		receive();
-		__no_operation();
+	TXByteCtr = 1;
+	Rx = 0;
+	__no_operation();//Read X Low byte value
+	transmit(0x03);
+	__no_operation();
+	Rx = 1;
+	__no_operation();
+	receive();
+	__no_operation();
 
-		x |= buff;
+	x |= buff;
 
-		TXByteCtr = 1;
-		Rx = 0;
-		__no_operation();//Read Y High byte value
-		transmit(0x06);
-		__no_operation();
-		Rx = 1;
-		__no_operation();
-		receive();
-		__no_operation();
+	TXByteCtr = 1;
+	Rx = 0;
+	__no_operation();//Read Y High byte value
+	transmit(0x06);
+	__no_operation();
+	Rx = 1;
+	__no_operation();
+	receive();
+	__no_operation();
 
-		y |= buff;
-		y = y << 8;
+	y |= buff;
+	y = y << 8;
 
-		TXByteCtr = 1;
-		Rx = 0;
-		__no_operation();//Read Y Low byte value
-		transmit(0x05);
-		__no_operation();
-		Rx = 1;
-		__no_operation();
-		receive();
-		__no_operation();
+	TXByteCtr = 1;
+	Rx = 0;
+	__no_operation();//Read Y Low byte value
+	transmit(0x05);
+	__no_operation();
+	Rx = 1;
+	__no_operation();
+	receive();
+	__no_operation();
 
-		y |= buff;
+	y |= buff;
 
-		TXByteCtr = 1;
-		Rx = 0;
-		__no_operation();//Read Z High byte value
-		transmit(0x08);
-		__no_operation();
-		Rx = 1;
-		__no_operation();
-		receive();
-		__no_operation();
-/*
+	TXByteCtr = 1;
+	Rx = 0;
+	__no_operation();//Read Z High byte value
+	transmit(0x08);
+	__no_operation();
+	Rx = 1;
+	__no_operation();
+	receive();
+	__no_operation();
+	/*
 		z |= buff;
 		z = z << 8;
 
@@ -240,20 +236,11 @@ void tallyOrientation(){
 		__no_operation();
 		receive();
 		__no_operation();
-*/
-		//Add up to get average
-		ax += x; 
-		ay += y; 
-	//	az += z;
-	}
-	// Calculate average
-	ax = ax >> 3;
-	ay = ay >> 3;
-	az = az >> 3;
+	 */
 
-	mx = (float)ax*(10.0*4912.0/32760.0)*sensVal[0] + X_COMPONENT_OFFSET; // Get actual x magnetometer value;
-	my = (float)ay*(10.0*4912.0/32760.0)*sensVal[1] + Y_COMPONENT_OFFSET; // Get actual y magnetometer value;
-	//mz = (float)az*(10.0*4912.0/32760.0)*sensVal[2];// - 125.0; // Get actual z magnetometer value;
+	mx = (float)x*(10.0*4912.0/32760.0)*sensVal[0] + X_COMPONENT_OFFSET; // Get actual x magnetometer value;
+	my = (float)y*(10.0*4912.0/32760.0)*sensVal[1] + Y_COMPONENT_OFFSET; // Get actual y magnetometer value;
+	//mz = (float)z*(10.0*4912.0/32760.0)*sensVal[2];// - 125.0; // Get actual z magnetometer value;
 }
 void calculateOrientation(){
 	//For Calculate Orientation use the following formula
@@ -269,13 +256,11 @@ void calculateOrientation(){
 	else orientation = -1.0*acosf(mx*nm);
 	if(orientation == NAN) orientation = 0.0;
 	else orientation = orientation *RADIAN_DEGREES_FACTOR;
-	orientation += 180;
 }
 
 void startCompass(){
-  receiveFlag = 1;
-  i2cSetup();
-  initCompass();
+	receiveFlag = 1;
+	i2cSetup();
 }
 
 float getOrientation(){
@@ -286,31 +271,31 @@ float getOrientation(){
 }
 #pragma vector = USCI_B0_VECTOR
 __interrupt void USCI_B0_ISR(void){
-  if(Rx){ // Check if waiting to receive an byte
-	  buff = UCB0RXBUF; // Store to buffer the byte received
-	  UCB0IFG &= ~UCRXIFG; // Clear Interrupt Flag
-	  __bic_SR_register_on_exit(LPM0_bits);
-  }
-  else{
-	switch (TXByteCtr){// Check TX byte counter
-	case 2:{
-		UCB0TXBUF = (char) TXData;            // Load TX buffer
-		TXByteCtr--;                          // Decrement TX byte counter
-		TXData = TXData >> 8;				 // Prepare to send the next flag
-		break;
+	if(Rx){ // Check if waiting to receive an byte
+		buff = UCB0RXBUF; // Store to buffer the byte received
+		UCB0IFG &= ~UCRXIFG; // Clear Interrupt Flag
+		__bic_SR_register_on_exit(LPM0_bits);
 	}
-	case 1:{
-	  UCB0TXBUF = (char) TXData;              // Load TX buffer
-	  TXByteCtr--;                            // Decrement TX byte counter
-	  break;
+	else{
+		switch (TXByteCtr){// Check TX byte counter
+		case 2:{
+			UCB0TXBUF = (char) TXData;            // Load TX buffer
+			TXByteCtr--;                          // Decrement TX byte counter
+			TXData = TXData >> 8;				 // Prepare to send the next flag
+			break;
+		}
+		case 1:{
+			UCB0TXBUF = (char) TXData;              // Load TX buffer
+			TXByteCtr--;                            // Decrement TX byte counter
+			break;
+		}
+		case 0:{
+			if(receiveFlag) UCB0CTL1 |= UCTXSTP;   // Send I2C stop condition flag if is not receiving a value.
+			UCB0IFG &= ~UCTXIFG;                  // Clear USCI_B0 TX int flag
+			__bic_SR_register_on_exit(LPM0_bits); // Exit LPM0
+			break;
+		}
+		default:break;
+		}
 	}
-	case 0:{
-	  if(receiveFlag) UCB0CTL1 |= UCTXSTP;   // Send I2C stop condition flag if is not receiving a value.
-	  UCB0IFG &= ~UCTXIFG;                  // Clear USCI_B0 TX int flag
-	  __bic_SR_register_on_exit(LPM0_bits); // Exit LPM0
-	  break;
-	}
-	default:break;
-	}
-  }
 }
