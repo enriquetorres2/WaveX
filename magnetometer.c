@@ -20,7 +20,6 @@ unsigned int TXData;
 unsigned char TXByteCtr;
 int Rx;
 void transmit(int word){						// Transmit to slave
-	UCB0CTL1 &= ~UCTR ;                     // Clear UCTR for writing to slave
 	Rx = 0;
 	TXData = word;
     while (UCB0CTL1 & UCTXSTP);             // Ensure stop condition got sent
@@ -45,7 +44,7 @@ void receive(void){							// Receive from slave
 
 void i2cSetup(){
 
-  P3SEL |= 0x03;                            // Assign I2C pins to USCI_B0
+  P3SEL |= BIT0 + BIT1;                            // Assign I2C pins to USCI_B0
   UCB0CTL1 |= UCSWRST;                      // Enable SW reset
   UCB0CTL0 = UCMST + UCMODE_3 + UCSYNC;     // I2C Master, synchronous mode
   UCB0CTL1 = UCSSEL_2 + UCSWRST;            // Use SMCLK, keep SW reset
@@ -304,7 +303,7 @@ __interrupt void USCI_B0_ISR(void){
 	  break;
 	}
 	case 0:{
-	  if(receiveFlag)UCB0CTL1 |= UCTXSTP;   // Send I2C stop condition flag if is not receiving a value.
+	  if(receiveFlag) UCB0CTL1 |= UCTXSTP;   // Send I2C stop condition flag if is not receiving a value.
 	  UCB0IFG &= ~UCTXIFG;                  // Clear USCI_B0 TX int flag
 	  __bic_SR_register_on_exit(LPM0_bits); // Exit LPM0
 	  break;

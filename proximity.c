@@ -27,7 +27,7 @@ void initProximitySersors(){
 	TA0CCR0 = 65535; // 4Hz signal
 	TA0CCTL0 |= CCIE; // Set interrupt for refreshing values
 	TA0CCTL4 |= OUTMOD_7; // Set PWM output to pin
-	TA0CCR4 = 1; // Set Pulse Width to 10ns
+	TA0CCR4 = 1; // Set Pulse Width to ~10ns
 	TA0CTL |= TACLR; // Clear TA0CLK
 	TA0CTL = TASSEL_2+MC_1+ID_2; //Start Timer A0 with SMCLK source (1,048,576 Hz), Up mode and a prescalar of 4.
 
@@ -78,7 +78,6 @@ __interrupt void Sensors(void){ // Interrupt for right sensor.
 		TA2CCTL0 &= ~CM_2; // Clear falling edge interrupt.
 		TA2CCTL0 |= CM_1; // Set rising edge interrupt.
 	}
-
 }
 #pragma vector = TIMER2_A1_VECTOR //1 & 2
 __interrupt void Sensor2(void){ // Interrupt for left and front sensor.
