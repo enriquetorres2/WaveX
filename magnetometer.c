@@ -154,7 +154,7 @@ void tallyOrientation(){
 
 	int i;
 	for (i = 0; i < 8; i++){
-		initCompass();
+		//initCompass();
 		//Each block represent a transaction between the MCU and the MPU-9265
 		TXByteCtr = 1;
 		Rx = 0;
@@ -215,7 +215,7 @@ void tallyOrientation(){
 		__no_operation();
 		receive();
 		__no_operation();
-
+/*
 		z |= buff;
 		z = z << 8;
 
@@ -240,11 +240,11 @@ void tallyOrientation(){
 		__no_operation();
 		receive();
 		__no_operation();
-
+*/
 		//Add up to get average
 		ax += x; 
 		ay += y; 
-		az += z; 
+	//	az += z;
 	}
 	// Calculate average
 	ax = ax >> 3;
@@ -253,7 +253,7 @@ void tallyOrientation(){
 
 	mx = (float)ax*(10.0*4912.0/32760.0)*sensVal[0] + X_COMPONENT_OFFSET; // Get actual x magnetometer value;
 	my = (float)ay*(10.0*4912.0/32760.0)*sensVal[1] + Y_COMPONENT_OFFSET; // Get actual y magnetometer value;
-	mz = (float)az*(10.0*4912.0/32760.0)*sensVal[2];// - 125.0; // Get actual z magnetometer value;
+	//mz = (float)az*(10.0*4912.0/32760.0)*sensVal[2];// - 125.0; // Get actual z magnetometer value;
 }
 void calculateOrientation(){
 	//For Calculate Orientation use the following formula
@@ -269,11 +269,13 @@ void calculateOrientation(){
 	else orientation = -1.0*acosf(mx*nm);
 	if(orientation == NAN) orientation = 0.0;
 	else orientation = orientation *RADIAN_DEGREES_FACTOR;
+	orientation += 180;
 }
 
 void startCompass(){
   receiveFlag = 1;
   i2cSetup();
+  initCompass();
 }
 
 float getOrientation(){

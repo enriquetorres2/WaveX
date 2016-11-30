@@ -17,10 +17,10 @@ void initProximitySersors(){
 	//Buffers to hold values
 	buff1[0] = 0; // To store time value at falling edge for right sensor echo.
 	buff1[1] = 0; // To store time value at rising edge for right sensor echo.
-	buff2[0] = 0; // To store time value at falling edge for left sensor echo.
-	buff2[1] = 0; // To store time value at rising edge for left sensor echo.
-	buff3[0] = 0; // To store time value at falling edge for front sensor echo.
-	buff3[1] = 0; // To store time value at rising edge for front sensor echo.
+	buff2[0] = 0; // To store time value at falling edge for front sensor echo.
+	buff2[1] = 0; // To store time value at rising edge for front sensor echo.
+	buff3[0] = 0; // To store time value at falling edge for left sensor echo.
+	buff3[1] = 0; // To store time value at rising edge for left sensor echo.
 
 	// Configure PWM signal for triggering proximity sensor
 	P1SEL |= BIT5; // Prepare pin for PWM output (P1.5)
@@ -84,12 +84,12 @@ __interrupt void Sensor2(void){ // Interrupt for left and front sensor.
 	switch (TA2IV){
 		case 0x02:{ // For left sensor
 			if(TA2CCTL1 & CM_1){ // If set for rising edge
-					buff2[1] = TA2CCR1; // Record rising edge value.
+					buff3[1] = TA2CCR1; // Record rising edge value.
 					TA2CCTL1 &= ~CM_1; // Clear rising edge interrupt.
 					TA2CCTL1 |= CM_2; // Set falling edge interrupt.
 				}
 				else if(TA2CCTL1 & CM_2){ // If set for falling edge
-					buff2[0] = TA2CCR1; // Record falling edge value.
+					buff3[0] = TA2CCR1; // Record falling edge value.
 					TA2CCTL1 &= ~CM_2; // Clear falling edge interrupt.
 					TA2CCTL1 |= CM_1; // Set rising edge interrupt.
 				}
@@ -97,12 +97,12 @@ __interrupt void Sensor2(void){ // Interrupt for left and front sensor.
 		}
 		case 0x04:{ // For front sensor
 			if(TA2CCTL2 & CM_1){ // If set for rising edge
-					buff3[1] = TA2CCR2; // Record rising edge value.
+					buff2[1] = TA2CCR2; // Record rising edge value.
 					TA2CCTL2 &= ~CM_1; // Clear rising edge interrupt.
 					TA2CCTL2 |= CM_2; // Set falling edge interrupt.
 			}
 			else if(TA2CCTL2 & CM_2){ // If set for falling edge
-				buff3[0] = TA2CCR2; // Record falling edge value.
+				buff2[0] = TA2CCR2; // Record falling edge value.
 				TA2CCTL2 &= ~CM_2; // Clear falling edge interrupt.
 				TA2CCTL2 |= CM_1; // Set rising edge interrupt.
 			}

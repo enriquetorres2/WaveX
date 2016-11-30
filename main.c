@@ -4,6 +4,42 @@
 #include "proximity.h"
 #include "SerialBluetooth.h"
 
+/*
+ * Wiring
+ * Motors--------------------------------------------
+ * RIGHT
+ * P1.2 -> pruple
+ * P1.3 -> blue
+ * LEFT
+ * P8.2 -> grey
+ * P8.3 -> white
+ *
+ * Bluetooth UART------------------------------------
+ * P3.4(RX) -> TX
+ * P3.3(TX) -> RX
+ *
+ * LEDS ---------------------------------------------
+ * LED A - POWER - P2.0
+ * LED B - SYSTEM OK - P2.2
+ * LED C - MODE LED - P4.0
+ * LED D - Bluetooth LED - P4.3
+ *
+ *
+ * ADC PINS -----------------------------------------
+ *
+ * Battery Mon. Enable - P6.2
+ * Battery Mon. Read - P6.1
+ * Multimeter IN - P6.0
+ *
+ *
+ * MISC ---------------------------------------------
+ *
+ * Buzzer Enable - P3.7
+ *
+ *
+ */
+
+
 #define forward 0            	// For easier developing
 #define left 1                     // here are a few values
 #define right 2
@@ -14,38 +50,54 @@
 #define connected 1
 #define disconnected 0
 
-int dirrection;       // 0 = forward, 1 = left, 2 = right, 3 = back, 4 = stop
-int turn;                	// Turning flag, 0 turn left, 1 turn right
-int mode;                // 0 = Manual, 1 Automatic
+#define LEDA_ON P2OUT |= BIT0;
+#define LEDB_ON P2OUT |= BIT2;
+#define LEDC_ON P4OUT |= BIT0;
+#define LEDD_ON P4OUT |= BIT3;
+#define ENABLE_BUZZ P3OUT |= BIT7;
 
+
+#define LEDA_OFF P2OUT &= ~BIT0;
+#define LEDB_OFF P2OUT &= ~BIT2;
+#define LEDC_OFF P4OUT &= ~BIT0;
+#define LEDD_OFF P4OUT &= ~BIT3;
+#define DISABLE_BUZZ P3OUT |= BIT7;
+
+
+int direction;       	// 0 = forward, 1 = left, 2 = right, 3 = back, 4 = stop
+int turn;               // Turning flag, 0 turn left, 1 turn right
+int mode;               // 0 = Manual, 1 Automatic
+float orientation; 		// Boat orientation
+float newOrientation;	// New boat orientation
+
+void turn_left(){
+	P1OUT &= ~(BIT2 + BIT3);				// Clear last input
+	P8OUT &= ~(BIT1 + BIT2);				// Clear last input
+	P1OUT |= BIT2;							// Set the relays to turn counterclockwise
+	P8OUT |= BIT1;							//
+}
 
 void turn_right(){
-	P1OUT &= ~(BIT2 + BIT3);                                                             // Clear last input
-	P8OUT &= ~(BIT1 + BIT2);                                                             // Clear last input
-	P1OUT |= BIT2;                                                                       // Set the relays to turn counterclockwise
-	P8OUT |= BIT1;                                                                       //
-}
-void turn_left(){
-	P1OUT &= ~(BIT2 + BIT3);                                                             // Clear last input
-	P8OUT &= ~(BIT1 + BIT2);                                                             // Clear last input
-	P1OUT |= BIT3;                                                                       //Set the relay to turn clockwise
+	P1OUT &= ~(BIT2 + BIT3);				// Clear last input
+	P8OUT &= ~(BIT1 + BIT2);				// Clear last input
+	P1OUT |= BIT3;								//Set the relay to turn clockwise
 	P8OUT |= BIT2;
 }
 void go_forward(){
-	P1OUT &= ~(BIT2 + BIT3);                                                             // Clear last input
-	P8OUT &= ~(BIT1 + BIT2);                                                             // Clear last input
-	P1OUT |= BIT3;
-	P8OUT |= BIT1;
+	P1OUT &= ~(BIT2 + BIT3);				// Clear last input
+	P8OUT &= ~(BIT1 + BIT2);				// Clear last input
+	P1OUT |= BIT2;
+	P8OUT |= BIT2;
 }
 void go_backwards(){
-	P1OUT &= ~(BIT2 + BIT3);                                                             // Clear last input
-	P8OUT &= ~(BIT1 + BIT2);                                                             // Clear last input
-	P1OUT |= (BIT2);
-	P8OUT |= (BIT2);
+	P1OUT &= ~(BIT2 + BIT3);				// Clear last input
+	P8OUT &= ~(BIT1 + BIT2);				// Clear last input
+	P1OUT |= (BIT3);
+	P8OUT |= (BIT1);
 }
 void off(){
-	P1OUT &= ~(BIT2 + BIT3);                                                             // Clear last input
-	P8OUT &= ~(BIT1 + BIT2);                                                             // Clear last input
+	P1OUT &= ~(BIT2 + BIT3);				// Clear last input
+	P8OUT &= ~(BIT1 + BIT2);				// Clear last input
 }
 /*
  * main.c
@@ -75,14 +127,16 @@ int main(void) {
 	PJDIR = 0xFF;
 
 	//Initialize global variables
-	dirrection = stop;
+	direction = stop;
 	turn = -1; //Do not turn
 	mode = manual; //Default mode is manual
+	orientation = -1;
+	newOrientation = -1;
 
 	//Initialize all Modules
 	initBTModule(); // Bluetooth Module
 	initProximitySersors(); // Proximity Sensors
-	initMultiMeter(); // Battery and Current Monitor
+	//initMultiMeter(); // Battery and Current Monitor
 	startCompass(); // Magnetometer
 
 	_BIS_SR(GIE); // Enable Interrupts
@@ -90,17 +144,18 @@ int main(void) {
 
 	//Start main program loop
 	while(1){
+		sendString("looping\n\r");
 		//BLUETOOTH
 		//Receive bluetooth commands/request from the app
 		//and executes/answers
 
-		BTBuffer = 'U';
-		getConnectionStatus();
-		__delay_cycles(200);
-		if(BTConnected == disconnected){//Is the bluetooth connected?
-				P2OUT &= ~BIT0;//Turn off Bluetooth LED   TODO
-		}
-		else{// It is connected
+	//	BTBuffer = 'U';
+	//	getConnectionStatus();
+	//	__delay_cycles(200);
+	//	if(BTConnected == disconnected){//Is the bluetooth connected?
+	//		P2OUT &= ~BIT0;//Turn off Bluetooth LED   TODO
+	//	}
+//		else{// It is connected
 			P4OUT |= BIT3;// Turn on Bluetooth LED
 			// Interpretation of instruction
 			if(BTBuffer == 'm'){                   	  // Tell app what mode WaveX is in.
@@ -134,31 +189,31 @@ int main(void) {
 			}
 			if(mode == manual){//Control
 				if(BTBuffer == 'w'){//Go forward?
-					dirrection = forward;
+					direction = forward;
 				}
 				else if(BTBuffer == 'a'){//Go left?
-					dirrection = left;
+					direction = left;
 				}
 				else if(BTBuffer == 's'){//Go in back?
-					dirrection = back;
+					direction = back;
 				}
 				else if(BTBuffer == 'd'){//Go right?
-					dirrection = right;
+					direction = right;
 				}
 				else if(BTBuffer == 't'){//Stop?
-					dirrection = stop;
+					direction = stop;
 				}
 			}
 			if(BTBuffer == 'p'){         //Should we go into manual?
 				if(mode != manual){      //if already in manual do not stop motors
-					dirrection = stop;   //Stop when entering manual
+					direction = stop;   //Stop when entering manual
 				}
 				mode = manual;           //Set mode to manual
 			}
 			else if(BTBuffer == 'o'){    //Should we go into auto?
 				mode = automatic;        //Set mode to auto
 			}
-		}
+//		}
 
 		//NAV CONTROL
 		//Here the MCU picks which direction
@@ -167,37 +222,43 @@ int main(void) {
 		}
 		else{							//Its in automatic
 			P4OUT |= BIT0;				//Turn on Mode LED
-
 			//Navigation algorithm
 			if(frontFlag == 1){			//The front if blocked
+				sendString("FrontFlag\n\r");
+				orientation = getOrientation();
+				newOrientation = orientation;
+				sendString("Got orientation\n\r");
 				if(leftFlag == 1){		//The left is blocked
-					dirrection = right;
+					sendString("LeftFlag\n\r");
+					direction = right;
 				}
 				else if(rightFlag == 1){//The right is blocked
-					dirrection = left;
+					sendString("RightFlag\n\r");
+					direction = left;
 				}
 				else{					//Neither side is blocked
-					dirrection = stop;
+					sendString("default turn\n\r");
+					direction = left;
 				}
 			}
 			else{						//Nothing blocking the way keep going
-				dirrection = forward;
+				direction = forward;
 			}
 		}
-		if(dirrection == forward){		//Do we go forward?
+		if(direction == forward){		//Do we go forward?
 			//Power Both Engines
 			go_forward();
 		}
-		else if(dirrection == back){		//Do go back?
+		else if(direction == back){		//Do go back?
 			//Shutdown both engines
 			go_backwards();
 		}
-		else if(dirrection == stop){		//Do we stop?
+		else if(direction == stop){		//Do we stop?
 			//Shutdown both engines
 			off();
 		}
-		else if(dirrection == left || dirrection == right){//Do we turn?
-			if(dirrection == left){						//Do we turn left?
+		else if(direction == left || direction == right){//Do we turn?
+			if(direction == left){						//Do we turn left?
 				//Shutdown left engine
 				turn_left();
 			}
@@ -205,6 +266,21 @@ int main(void) {
 				//Shutdown right engine
 				turn_right();
 			}
+			if(orientation > -1){
+				sendString("Entered 180 degree turn\n\r");
+				int turnDeg = newOrientation - orientation;
+				while(turnDeg < 170){
+					newOrientation = getOrientation();
+					turnDeg = newOrientation - orientation;
+					if(turnDeg < 0){
+						turnDeg = -1*turnDeg;
+					}
+				}
+			}
+			orientation = -1;
+			newOrientation = -1;
+			direction = forward;
+			sendString("Exited 180 degree turn\n\r");
 		}
 	}
 }

@@ -7,6 +7,6 @@
 void startCompass();
 
 //Get current orientation
-void getOrientation();
+float getOrientation();
 
-#endif /* MANGETOMETER_H_ */
+#endif /*MANGETOMETER_H_*/
