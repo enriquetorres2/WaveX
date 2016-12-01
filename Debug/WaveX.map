@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker Unix v15.12.3                  
 ******************************************************************************
->> Linked Wed Nov 30 15:33:35 2016
+>> Linked Thu Dec  1 00:09:59 2016
 
 OUTPUT FILE NAME:   <WaveX.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 000045a8
@@ -19,8 +19,8 @@ MEMORY CONFIGURATION
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
   USBRAM                00001c00   00000800  00000000  00000800  RWIX
-  RAM                   00002400   00002000  0000010f  00001ef1  RWIX
-  FLASH                 00004400   0000bb80  000003a0  0000b7e0  RWIX
+  RAM                   00002400   00002000  0000010b  00001ef5  RWIX
+  FLASH                 00004400   0000bb80  00000396  0000b7ea  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
   INT02                 0000ff84   00000002  00000000  00000002  RWIX
@@ -85,7 +85,7 @@ MEMORY CONFIGURATION
   INT61                 0000fffa   00000002  00000002  00000000  RWIX
   INT62                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FLASH2                00010000   00014400  00002918  00011ae8  RWIX
+  FLASH2                00010000   00014400  0000290a  00011af6  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -93,7 +93,7 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
-.bss       0    00002400    0000006b     UNINITIALIZED
+.bss       0    00002400    00000067     UNINITIALIZED
                   00002400    00000010     (.common:A0results)
                   00002410    00000010     (.common:A1results)
                   00002420    0000000c     (.common:sensVal)
@@ -102,29 +102,28 @@ section   page    origin      length       input sections
                   00002434    00000004     (.common:buff3)
                   00002438    00000004     (.common:mx)
                   0000243c    00000004     (.common:my)
-                  00002440    00000004     (.common:newOrientation)
-                  00002444    00000004     (.common:orientation)
-                  00002448    00000002     multimeter.obj (.bss)
-                  0000244a    00000002     (.common:BTBuffer)
-                  0000244c    00000002     (.common:Rx)
-                  0000244e    00000002     (.common:TXData)
-                  00002450    00000002     (.common:battery)
-                  00002452    00000002     (.common:buff)
-                  00002454    00000002     (.common:current)
-                  00002456    00000002     (.common:direction)
-                  00002458    00000002     (.common:frontFlag)
-                  0000245a    00000002     (.common:leftFlag)
-                  0000245c    00000002     (.common:mode)
-                  0000245e    00000002     (.common:receiveFlag)
-                  00002460    00000002     (.common:rightFlag)
-                  00002462    00000002     (.common:turn)
-                  00002464    00000002     (.common:x)
-                  00002466    00000002     (.common:y)
-                  00002468    00000002     (.common:z)
-                  0000246a    00000001     (.common:TXByteCtr)
+                  00002440    00000004     (.common:orientation)
+                  00002444    00000002     multimeter.obj (.bss)
+                  00002446    00000002     (.common:BTBuffer)
+                  00002448    00000002     (.common:Rx)
+                  0000244a    00000002     (.common:TXData)
+                  0000244c    00000002     (.common:battery)
+                  0000244e    00000002     (.common:buff)
+                  00002450    00000002     (.common:current)
+                  00002452    00000002     (.common:direction)
+                  00002454    00000002     (.common:frontFlag)
+                  00002456    00000002     (.common:leftFlag)
+                  00002458    00000002     (.common:mode)
+                  0000245a    00000002     (.common:receiveFlag)
+                  0000245c    00000002     (.common:rightFlag)
+                  0000245e    00000002     (.common:turn)
+                  00002460    00000002     (.common:x)
+                  00002462    00000002     (.common:y)
+                  00002464    00000002     (.common:z)
+                  00002466    00000001     (.common:TXByteCtr)
 
-.data      0    0000246c    00000004     UNINITIALIZED
-                  0000246c    00000004     SerialBluetooth.obj (.data)
+.data      0    00002468    00000004     UNINITIALIZED
+                  00002468    00000004     SerialBluetooth.obj (.data)
 
 .stack     0    00004360    000000a0     UNINITIALIZED
                   00004360    00000004     rts430x_lc_rd_eabi.lib : boot.obj (.stack)
@@ -141,23 +140,23 @@ section   page    origin      length       input sections
                   000045c2    0000000a     proximity.obj (.text:_isr:WriteValues)
                   000045cc    00000008     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
 
-.cinit     0    00004774    0000002c     
-                  00004774    0000000a     (.cinit..data.load) [load image, compression = rle]
-                  0000477e    00000009     (.cinit..bss.load) [load image, compression = rle]
-                  00004787    00000001     --HOLE-- [fill = 0]
-                  00004788    00000008     (__TI_handler_table)
-                  00004790    00000010     (__TI_cinit_table)
+.cinit     0    0000476a    0000002c     
+                  0000476a    0000000a     (.cinit..data.load) [load image, compression = rle]
+                  00004774    00000009     (.cinit..bss.load) [load image, compression = rle]
+                  0000477d    00000001     --HOLE-- [fill = 0]
+                  0000477e    00000008     (__TI_handler_table)
+                  00004786    00000010     (__TI_cinit_table)
 
 .binit     0    00004400    00000000     
 
 .init_array 
 *          0    00004400    00000000     UNINITIALIZED
 
-.const     0    000045d4    000001a0     
+.const     0    000045d4    00000196     
                   000045d4    000000c0     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_tables.o (.const:msp430_sqrt_lookup)
-                  00004694    00000084     main.obj (.const:.string)
-                  00004718    00000044     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_tables.o (.const:msp430_asin_coeffs)
-                  0000475c    00000018                                                                       : msp430_tables.o (.const:msp430_asin_params)
+                  00004694    0000007a     main.obj (.const:.string)
+                  0000470e    00000044     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_tables.o (.const:msp430_asin_coeffs)
+                  00004752    00000018                                                                       : msp430_tables.o (.const:msp430_asin_params)
 
 RTC        0    0000ffd2    00000002     
                   0000ffd2    00000002     rts430x_lc_rd_eabi.lib : int41.obj (.int41)
@@ -236,67 +235,67 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.obj (.reset)
 
-.text      0    00010000    00002918     
+.text      0    00010000    0000290a     
                   00010000    00000486     rts430x_lc_rd_eabi.lib : frcdivd.obj (.text:__TI_frcdivd)
                   00010486    000003de     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_acos_asin.o (.text:msp430_acos_asin)
                   00010864    000002e4     rts430x_lc_rd_eabi.lib : frcmpyd.obj (.text:__TI_frcmpyd)
                   00010b48    000002d8                            : addd.obj (.text:__mspabi_addd)
-                  00010e20    000002ce     main.obj (.text:main)
-                  000110ee    00000282     rts430x_lc_rd_eabi.lib : mpyd.obj (.text:__mspabi_mpyd)
-                  00011370    00000252                            : frcaddd.obj (.text:__TI_frcaddd)
-                  000115c2    00000222                            : divd.obj (.text:__mspabi_divd)
-                  000117e4    000001b6     magnetometer.obj (.text:tallyOrientation)
-                  0001199a    000001a2     magnetometer.obj (.text:initCompass)
-                  00011b3c    00000138     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_sqrt.o (.text:sqrtf)
-                  00011c74    00000132     rts430x_lc_rd_eabi.lib : fs_add.obj (.text)
-                  00011da6    00000112     magnetometer.obj (.text:calculateOrientation)
-                  00011eb8    000000cc     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_common.o (.text:msp430_calc_sqrt)
-                  00011f84    000000b8     rts430x_lc_rd_eabi.lib : fs_mpy.obj (.text)
-                  0001203c    000000b2                            : renormd.obj (.text:__TI_renormd)
-                  000120ee    00000090                            : fs_div.obj (.text)
-                  0001217e    0000008c                            : cvtdf.obj (.text:__mspabi_cvtdf)
-                  0001220a    00000082                            : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
-                  0001228c    0000007e                            : fs_tol.obj (.text)
-                  0001230a    0000006e                            : cvtfd.obj (.text:__mspabi_cvtfd)
-                  00012378    0000006c     proximity.obj (.text:initProximitySersors)
-                  000123e4    00000068     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
-                  0001244c    00000068                            : fs_toi.obj (.text)
-                  000124b4    00000066                            : cpy_tbl.obj (.text:copy_in)
-                  0001251a    0000004e     proximity.obj (.text:updateProximity)
-                  00012568    0000004a     rts430x_lc_rd_eabi.lib : fs_cmp.obj (.text)
-                  000125b2    0000004a                            : fs_ltof.obj (.text)
-                  000125fc    0000003e                            : asr32.obj (.text:l_asr_const)
-                  0001263a    0000003e                            : lsl32.obj (.text:l_lsl_const)
-                  00012678    0000003e                            : lsr32.obj (.text:l_lsr_const)
-                  000126b6    00000036                            : fs_itof.obj (.text)
-                  000126ec    00000032     magnetometer.obj (.text:i2cSetup)
-                  0001271e    00000032     SerialBluetooth.obj (.text:initBTModule)
-                  00012750    0000002e     magnetometer.obj (.text:receive)
-                  0001277e    00000024     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
-                  000127a2    0000001e     magnetometer.obj (.text:transmit)
-                  000127c0    0000001c     multimeter.obj (.text:average)
-                  000127dc    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.obj (.text)
-                  000127f4    00000016     main.obj (.text:go_backwards)
-                  0001280a    00000016     main.obj (.text:go_forward)
-                  00012820    00000016     SerialBluetooth.obj (.text:sendString)
-                  00012836    00000016     main.obj (.text:turn_left)
-                  0001284c    00000016     main.obj (.text:turn_right)
-                  00012862    00000014     magnetometer.obj (.text:getOrientation)
-                  00012876    00000014     rts430x_lc_rd_eabi.lib : memcpy.obj (.text:memcpy)
-                  0001288a    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  0001289c    00000010                            : asr32.obj (.text:l_asr)
-                  000128ac    00000010                            : lsl32.obj (.text:l_lsl)
-                  000128bc    00000010                            : lsr32.obj (.text:l_lsr)
-                  000128cc    0000000e     main.obj (.text:off)
-                  000128da    0000000c     SerialBluetooth.obj (.text:sendByte)
-                  000128e6    0000000a     rts430x_lc_rd_eabi.lib : fs_neg.obj (.text)
-                  000128f0    0000000a     magnetometer.obj (.text:startCompass)
-                  000128fa    00000006     rts430x_lc_rd_eabi.lib : exit.obj (.text:abort)
-                  00012900    00000006     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_acos_asin.o (.text:acosf)
-                  00012906    00000006     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
-                  0001290c    00000006     multimeter.obj (.text:doSamples)
-                  00012912    00000004     rts430x_lc_rd_eabi.lib : pre_init.obj (.text:_system_pre_init)
-                  00012916    00000002                            : startup.obj (.text:_system_post_cinit)
+                  00010e20    000002c0     main.obj (.text:main)
+                  000110e0    00000282     rts430x_lc_rd_eabi.lib : mpyd.obj (.text:__mspabi_mpyd)
+                  00011362    00000252                            : frcaddd.obj (.text:__TI_frcaddd)
+                  000115b4    00000222                            : divd.obj (.text:__mspabi_divd)
+                  000117d6    000001b6     magnetometer.obj (.text:tallyOrientation)
+                  0001198c    000001a2     magnetometer.obj (.text:initCompass)
+                  00011b2e    00000138     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_sqrt.o (.text:sqrtf)
+                  00011c66    00000132     rts430x_lc_rd_eabi.lib : fs_add.obj (.text)
+                  00011d98    00000112     magnetometer.obj (.text:calculateOrientation)
+                  00011eaa    000000cc     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_common.o (.text:msp430_calc_sqrt)
+                  00011f76    000000b8     rts430x_lc_rd_eabi.lib : fs_mpy.obj (.text)
+                  0001202e    000000b2                            : renormd.obj (.text:__TI_renormd)
+                  000120e0    00000090                            : fs_div.obj (.text)
+                  00012170    0000008c                            : cvtdf.obj (.text:__mspabi_cvtdf)
+                  000121fc    00000082                            : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
+                  0001227e    0000007e                            : fs_tol.obj (.text)
+                  000122fc    0000006e                            : cvtfd.obj (.text:__mspabi_cvtfd)
+                  0001236a    0000006c     proximity.obj (.text:initProximitySersors)
+                  000123d6    00000068     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
+                  0001243e    00000068                            : fs_toi.obj (.text)
+                  000124a6    00000066                            : cpy_tbl.obj (.text:copy_in)
+                  0001250c    0000004e     proximity.obj (.text:updateProximity)
+                  0001255a    0000004a     rts430x_lc_rd_eabi.lib : fs_cmp.obj (.text)
+                  000125a4    0000004a                            : fs_ltof.obj (.text)
+                  000125ee    0000003e                            : asr32.obj (.text:l_asr_const)
+                  0001262c    0000003e                            : lsl32.obj (.text:l_lsl_const)
+                  0001266a    0000003e                            : lsr32.obj (.text:l_lsr_const)
+                  000126a8    00000036                            : fs_itof.obj (.text)
+                  000126de    00000032     magnetometer.obj (.text:i2cSetup)
+                  00012710    00000032     SerialBluetooth.obj (.text:initBTModule)
+                  00012742    0000002e     magnetometer.obj (.text:receive)
+                  00012770    00000024     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
+                  00012794    0000001e     magnetometer.obj (.text:transmit)
+                  000127b2    0000001c     multimeter.obj (.text:average)
+                  000127ce    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.obj (.text)
+                  000127e6    00000016     main.obj (.text:go_backwards)
+                  000127fc    00000016     main.obj (.text:go_forward)
+                  00012812    00000016     SerialBluetooth.obj (.text:sendString)
+                  00012828    00000016     main.obj (.text:turn_left)
+                  0001283e    00000016     main.obj (.text:turn_right)
+                  00012854    00000014     magnetometer.obj (.text:getOrientation)
+                  00012868    00000014     rts430x_lc_rd_eabi.lib : memcpy.obj (.text:memcpy)
+                  0001287c    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  0001288e    00000010                            : asr32.obj (.text:l_asr)
+                  0001289e    00000010                            : lsl32.obj (.text:l_lsl)
+                  000128ae    00000010                            : lsr32.obj (.text:l_lsr)
+                  000128be    0000000e     main.obj (.text:off)
+                  000128cc    0000000c     SerialBluetooth.obj (.text:sendByte)
+                  000128d8    0000000a     rts430x_lc_rd_eabi.lib : fs_neg.obj (.text)
+                  000128e2    0000000a     magnetometer.obj (.text:startCompass)
+                  000128ec    00000006     rts430x_lc_rd_eabi.lib : exit.obj (.text:abort)
+                  000128f2    00000006     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_acos_asin.o (.text:acosf)
+                  000128f8    00000006     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
+                  000128fe    00000006     multimeter.obj (.text:doSamples)
+                  00012904    00000004     rts430x_lc_rd_eabi.lib : pre_init.obj (.text:_system_pre_init)
+                  00012908    00000002                            : startup.obj (.text:_system_post_cinit)
 
 MODULE SUMMARY
 
@@ -304,12 +303,12 @@ MODULE SUMMARY
        ------                     ----    -------   -------
     ./
        magnetometer.obj           1392    2         39     
-       main.obj                   820     132       10     
+       main.obj                   806     122       6      
        proximity.obj              374     6         18     
        SerialBluetooth.obj        146     2         6      
        multimeter.obj             112     2         38     
     +--+--------------------------+-------+---------+---------+
-       Total:                     2844    144       111    
+       Total:                     2830    134       107    
                                                            
     /Applications/ti/ccsv6/ccs_base/msp430/lib/5xx_6xx_FRxx/MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib
        msp430_acos_asin.o         996     0         0      
@@ -376,19 +375,19 @@ MODULE SUMMARY
        Stack:                     0       0         160    
        Linker Generated:          0       43        0      
     +--+--------------------------+-------+---------+---------+
-       Grand Total:               10988   505       271    
+       Grand Total:               10974   495       267    
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00004790 records: 2, size/record: 8, table size: 16
-	.data: load addr=00004774, load size=0000000a bytes, run addr=0000246c, run size=00000004 bytes, compression=rle
-	.bss: load addr=0000477e, load size=00000009 bytes, run addr=00002400, run size=0000006b bytes, compression=rle
+__TI_cinit_table @ 00004786 records: 2, size/record: 8, table size: 16
+	.data: load addr=0000476a, load size=0000000a bytes, run addr=00002468, run size=00000004 bytes, compression=rle
+	.bss: load addr=00004774, load size=00000009 bytes, run addr=00002400, run size=00000067 bytes, compression=rle
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00004788 records: 2, size/record: 4, table size: 8
+__TI_handler_table @ 0000477e records: 2, size/record: 4, table size: 8
 	index: 0, handler: __TI_decompress_rle24
 	index: 1, handler: __TI_decompress_none
 
@@ -482,9 +481,9 @@ address   name
 00000732  ADC12MEM9               
 00000733  ADC12MEM9_H             
 00000732  ADC12MEM9_L             
-0000244a  BTBuffer                
-0000246c  BTConnected             
-000128fa  C$$EXIT                 
+00002446  BTBuffer                
+00002468  BTConnected             
+000128ec  C$$EXIT                 
 000008c0  CBCTL0                  
 000008c1  CBCTL0_H                
 000008c0  CBCTL0_L                
@@ -807,7 +806,7 @@ address   name
 000004b6  RTCYEAR                 
 000004b7  RTCYEAR_H               
 000004b6  RTCYEAR_L               
-0000244c  Rx                      
+00002448  Rx                      
 00000100  SFRIE1                  
 00000101  SFRIE1_H                
 00000100  SFRIE1_L                
@@ -916,8 +915,8 @@ address   name
 000003e0  TB0EX0                  
 000003ee  TB0IV                   
 000003d0  TB0R                    
-0000246a  TXByteCtr               
-0000244e  TXData                  
+00002466  TXByteCtr               
+0000244a  TXData                  
 000005d0  UCA0ABCTL               
 000005c6  UCA0BRW                 
 000005c7  UCA0BRW_H               
@@ -1163,16 +1162,16 @@ address   name
 000000a0  __STACK_SIZE            
 UNDEFED   __TI_BINIT_Base         
 UNDEFED   __TI_BINIT_Limit        
-00004790  __TI_CINIT_Base         
-000047a0  __TI_CINIT_Limit        
-00004788  __TI_Handler_Table_Base 
-00004790  __TI_Handler_Table_Limit
+00004786  __TI_CINIT_Base         
+00004796  __TI_CINIT_Limit        
+0000477e  __TI_Handler_Table_Base 
+00004786  __TI_Handler_Table_Limit
 UNDEFED   __TI_INITARRAY_Base     
 UNDEFED   __TI_INITARRAY_Limit    
 000045cc  __TI_ISR_TRAP           
-0001288a  __TI_decompress_none    
-00012906  __TI_decompress_rle24   
-00011370  __TI_frcaddd            
+0001287c  __TI_decompress_none    
+000128f8  __TI_decompress_rle24   
+00011362  __TI_frcaddd            
 00010000  __TI_frcdivd            
 00010864  __TI_frcmpyd            
 0000ffd2  __TI_int41              
@@ -1200,132 +1199,131 @@ UNDEFED   __TI_INITARRAY_Limit
 ffffffff  __TI_pprof_out_hndl     
 ffffffff  __TI_prof_data_size     
 ffffffff  __TI_prof_data_start    
-0001203c  __TI_renormd            
+0001202e  __TI_renormd            
 ffffffff  __c_args__              
 00010b48  __mspabi_addd           
-00011c7a  __mspabi_addf           
-00012568  __mspabi_cmpf           
-0001217e  __mspabi_cvtdf          
-0001230a  __mspabi_cvtfd          
-000115c2  __mspabi_divd           
-000120ee  __mspabi_divf           
-0001244c  __mspabi_fixfi          
-0001228c  __mspabi_fixfli         
-000126b6  __mspabi_fltif          
-000125b2  __mspabi_fltlif         
-000110ee  __mspabi_mpyd           
-00011f84  __mspabi_mpyf           
-000127dc  __mspabi_mpyi_f5hw      
-0001277e  __mspabi_mpyl_f5hw      
-000128e6  __mspabi_negf           
-000128ac  __mspabi_slll           
-00012672  __mspabi_slll_1         
-0001264e  __mspabi_slll_10        
-0001264a  __mspabi_slll_11        
-00012646  __mspabi_slll_12        
-00012642  __mspabi_slll_13        
-0001263e  __mspabi_slll_14        
-0001263a  __mspabi_slll_15        
-0001266e  __mspabi_slll_2         
-0001266a  __mspabi_slll_3         
-00012666  __mspabi_slll_4         
-00012662  __mspabi_slll_5         
-0001265e  __mspabi_slll_6         
-0001265a  __mspabi_slll_7         
-00012656  __mspabi_slll_8         
-00012652  __mspabi_slll_9         
-0001289c  __mspabi_sral           
-00012634  __mspabi_sral_1         
-00012610  __mspabi_sral_10        
-0001260c  __mspabi_sral_11        
-00012608  __mspabi_sral_12        
-00012604  __mspabi_sral_13        
-00012600  __mspabi_sral_14        
-000125fc  __mspabi_sral_15        
-00012630  __mspabi_sral_2         
-0001262c  __mspabi_sral_3         
-00012628  __mspabi_sral_4         
-00012624  __mspabi_sral_5         
-00012620  __mspabi_sral_6         
-0001261c  __mspabi_sral_7         
-00012618  __mspabi_sral_8         
-00012614  __mspabi_sral_9         
-000128bc  __mspabi_srll           
-000126b0  __mspabi_srll_1         
-0001268c  __mspabi_srll_10        
-00012688  __mspabi_srll_11        
-00012684  __mspabi_srll_12        
-00012680  __mspabi_srll_13        
-0001267c  __mspabi_srll_14        
-00012678  __mspabi_srll_15        
-000126ac  __mspabi_srll_2         
-000126a8  __mspabi_srll_3         
-000126a4  __mspabi_srll_4         
-000126a0  __mspabi_srll_5         
-0001269c  __mspabi_srll_6         
-00012698  __mspabi_srll_7         
-00012694  __mspabi_srll_8         
-00012690  __mspabi_srll_9         
-00011c74  __mspabi_subf           
-0001220a  _auto_init_hold_wdt     
+00011c6c  __mspabi_addf           
+0001255a  __mspabi_cmpf           
+00012170  __mspabi_cvtdf          
+000122fc  __mspabi_cvtfd          
+000115b4  __mspabi_divd           
+000120e0  __mspabi_divf           
+0001243e  __mspabi_fixfi          
+0001227e  __mspabi_fixfli         
+000126a8  __mspabi_fltif          
+000125a4  __mspabi_fltlif         
+000110e0  __mspabi_mpyd           
+00011f76  __mspabi_mpyf           
+000127ce  __mspabi_mpyi_f5hw      
+00012770  __mspabi_mpyl_f5hw      
+000128d8  __mspabi_negf           
+0001289e  __mspabi_slll           
+00012664  __mspabi_slll_1         
+00012640  __mspabi_slll_10        
+0001263c  __mspabi_slll_11        
+00012638  __mspabi_slll_12        
+00012634  __mspabi_slll_13        
+00012630  __mspabi_slll_14        
+0001262c  __mspabi_slll_15        
+00012660  __mspabi_slll_2         
+0001265c  __mspabi_slll_3         
+00012658  __mspabi_slll_4         
+00012654  __mspabi_slll_5         
+00012650  __mspabi_slll_6         
+0001264c  __mspabi_slll_7         
+00012648  __mspabi_slll_8         
+00012644  __mspabi_slll_9         
+0001288e  __mspabi_sral           
+00012626  __mspabi_sral_1         
+00012602  __mspabi_sral_10        
+000125fe  __mspabi_sral_11        
+000125fa  __mspabi_sral_12        
+000125f6  __mspabi_sral_13        
+000125f2  __mspabi_sral_14        
+000125ee  __mspabi_sral_15        
+00012622  __mspabi_sral_2         
+0001261e  __mspabi_sral_3         
+0001261a  __mspabi_sral_4         
+00012616  __mspabi_sral_5         
+00012612  __mspabi_sral_6         
+0001260e  __mspabi_sral_7         
+0001260a  __mspabi_sral_8         
+00012606  __mspabi_sral_9         
+000128ae  __mspabi_srll           
+000126a2  __mspabi_srll_1         
+0001267e  __mspabi_srll_10        
+0001267a  __mspabi_srll_11        
+00012676  __mspabi_srll_12        
+00012672  __mspabi_srll_13        
+0001266e  __mspabi_srll_14        
+0001266a  __mspabi_srll_15        
+0001269e  __mspabi_srll_2         
+0001269a  __mspabi_srll_3         
+00012696  __mspabi_srll_4         
+00012692  __mspabi_srll_5         
+0001268e  __mspabi_srll_6         
+0001268a  __mspabi_srll_7         
+00012686  __mspabi_srll_8         
+00012682  __mspabi_srll_9         
+00011c66  __mspabi_subf           
+000121fc  _auto_init_hold_wdt     
 000045a8  _c_int00_noargs_noexit  
 0000fffe  _reset_vector           
 00004360  _stack                  
-00012916  _system_post_cinit      
-00012912  _system_pre_init        
-000128fa  abort                   
-00012900  acosf                   
-000127c0  average                 
-00002450  battery                 
-00002452  buff                    
+00012908  _system_post_cinit      
+00012904  _system_pre_init        
+000128ec  abort                   
+000128f2  acosf                   
+000127b2  average                 
+0000244c  battery                 
+0000244e  buff                    
 0000242c  buff1                   
 00002430  buff2                   
 00002434  buff3                   
-00011da6  calculateOrientation    
-000124b4  copy_in                 
-00002454  current                 
-00002456  direction               
-0001290c  doSamples               
-00002458  frontFlag               
-00012862  getOrientation          
-000127f4  go_backwards            
-0001280a  go_forward              
-000126ec  i2cSetup                
-0001271e  initBTModule            
-0001199a  initCompass             
-00012378  initProximitySersors    
-0000245a  leftFlag                
+00011d98  calculateOrientation    
+000124a6  copy_in                 
+00002450  current                 
+00002452  direction               
+000128fe  doSamples               
+00002454  frontFlag               
+00012854  getOrientation          
+000127e6  go_backwards            
+000127fc  go_forward              
+000126de  i2cSetup                
+00012710  initBTModule            
+0001198c  initCompass             
+0001236a  initProximitySersors    
+00002456  leftFlag                
 00010e20  main                    
-00012876  memcpy                  
-0000246e  midFlag                 
-0000245c  mode                    
+00012868  memcpy                  
+0000246a  midFlag                 
+00002458  mode                    
 00010486  msp430_acos_asin        
-00004718  msp430_asin_coeffs      
-0000475c  msp430_asin_params      
-00011eb8  msp430_calc_sqrt        
+0000470e  msp430_asin_coeffs      
+00004752  msp430_asin_params      
+00011eaa  msp430_calc_sqrt        
 000045d4  msp430_sqrt_lookup      
 00002438  mx                      
 0000243c  my                      
-00002440  newOrientation          
-000128cc  off                     
-00002444  orientation             
-00012750  receive                 
-0000245e  receiveFlag             
-00002460  rightFlag               
-000128da  sendByte                
-00012820  sendString              
+000128be  off                     
+00002440  orientation             
+00012742  receive                 
+0000245a  receiveFlag             
+0000245c  rightFlag               
+000128cc  sendByte                
+00012812  sendString              
 00002420  sensVal                 
-00011b3c  sqrtf                   
-000128f0  startCompass            
-000117e4  tallyOrientation        
-000127a2  transmit                
-00002462  turn                    
-00012836  turn_left               
-0001284c  turn_right              
-0001251a  updateProximity         
-00002464  x                       
-00002466  y                       
-00002468  z                       
+00011b2e  sqrtf                   
+000128e2  startCompass            
+000117d6  tallyOrientation        
+00012794  transmit                
+0000245e  turn                    
+00012828  turn_left               
+0001283e  turn_right              
+0001250c  updateProximity         
+00002460  x                       
+00002462  y                       
+00002464  z                       
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -2089,27 +2087,26 @@ address   name
 00002434  buff3                   
 00002438  mx                      
 0000243c  my                      
-00002440  newOrientation          
-00002444  orientation             
-0000244a  BTBuffer                
-0000244c  Rx                      
-0000244e  TXData                  
-00002450  battery                 
-00002452  buff                    
-00002454  current                 
-00002456  direction               
-00002458  frontFlag               
-0000245a  leftFlag                
-0000245c  mode                    
-0000245e  receiveFlag             
-00002460  rightFlag               
-00002462  turn                    
-00002464  x                       
-00002466  y                       
-00002468  z                       
-0000246a  TXByteCtr               
-0000246c  BTConnected             
-0000246e  midFlag                 
+00002440  orientation             
+00002446  BTBuffer                
+00002448  Rx                      
+0000244a  TXData                  
+0000244c  battery                 
+0000244e  buff                    
+00002450  current                 
+00002452  direction               
+00002454  frontFlag               
+00002456  leftFlag                
+00002458  mode                    
+0000245a  receiveFlag             
+0000245c  rightFlag               
+0000245e  turn                    
+00002460  x                       
+00002462  y                       
+00002464  z                       
+00002466  TXByteCtr               
+00002468  BTConnected             
+0000246a  midFlag                 
 00004360  _stack                  
 00004400  Sensor2                 
 00004400  __STACK_END             
@@ -2121,12 +2118,12 @@ address   name
 000045c2  WriteValues             
 000045cc  __TI_ISR_TRAP           
 000045d4  msp430_sqrt_lookup      
-00004718  msp430_asin_coeffs      
-0000475c  msp430_asin_params      
-00004788  __TI_Handler_Table_Base 
-00004790  __TI_CINIT_Base         
-00004790  __TI_Handler_Table_Limit
-000047a0  __TI_CINIT_Limit        
+0000470e  msp430_asin_coeffs      
+00004752  msp430_asin_params      
+0000477e  __TI_Handler_Table_Base 
+00004786  __TI_CINIT_Base         
+00004786  __TI_Handler_Table_Limit
+00004796  __TI_CINIT_Limit        
 0000ffd2  __TI_int41              
 0000ffd4  __TI_int42              
 0000ffd6  __TI_int43              
@@ -2155,104 +2152,104 @@ address   name
 00010864  __TI_frcmpyd            
 00010b48  __mspabi_addd           
 00010e20  main                    
-000110ee  __mspabi_mpyd           
-00011370  __TI_frcaddd            
-000115c2  __mspabi_divd           
-000117e4  tallyOrientation        
-0001199a  initCompass             
-00011b3c  sqrtf                   
-00011c74  __mspabi_subf           
-00011c7a  __mspabi_addf           
-00011da6  calculateOrientation    
-00011eb8  msp430_calc_sqrt        
-00011f84  __mspabi_mpyf           
-0001203c  __TI_renormd            
-000120ee  __mspabi_divf           
-0001217e  __mspabi_cvtdf          
-0001220a  _auto_init_hold_wdt     
-0001228c  __mspabi_fixfli         
-0001230a  __mspabi_cvtfd          
-00012378  initProximitySersors    
-0001244c  __mspabi_fixfi          
-000124b4  copy_in                 
-0001251a  updateProximity         
-00012568  __mspabi_cmpf           
-000125b2  __mspabi_fltlif         
-000125fc  __mspabi_sral_15        
-00012600  __mspabi_sral_14        
-00012604  __mspabi_sral_13        
-00012608  __mspabi_sral_12        
-0001260c  __mspabi_sral_11        
-00012610  __mspabi_sral_10        
-00012614  __mspabi_sral_9         
-00012618  __mspabi_sral_8         
-0001261c  __mspabi_sral_7         
-00012620  __mspabi_sral_6         
-00012624  __mspabi_sral_5         
-00012628  __mspabi_sral_4         
-0001262c  __mspabi_sral_3         
-00012630  __mspabi_sral_2         
-00012634  __mspabi_sral_1         
-0001263a  __mspabi_slll_15        
-0001263e  __mspabi_slll_14        
-00012642  __mspabi_slll_13        
-00012646  __mspabi_slll_12        
-0001264a  __mspabi_slll_11        
-0001264e  __mspabi_slll_10        
-00012652  __mspabi_slll_9         
-00012656  __mspabi_slll_8         
-0001265a  __mspabi_slll_7         
-0001265e  __mspabi_slll_6         
-00012662  __mspabi_slll_5         
-00012666  __mspabi_slll_4         
-0001266a  __mspabi_slll_3         
-0001266e  __mspabi_slll_2         
-00012672  __mspabi_slll_1         
-00012678  __mspabi_srll_15        
-0001267c  __mspabi_srll_14        
-00012680  __mspabi_srll_13        
-00012684  __mspabi_srll_12        
-00012688  __mspabi_srll_11        
-0001268c  __mspabi_srll_10        
-00012690  __mspabi_srll_9         
-00012694  __mspabi_srll_8         
-00012698  __mspabi_srll_7         
-0001269c  __mspabi_srll_6         
-000126a0  __mspabi_srll_5         
-000126a4  __mspabi_srll_4         
-000126a8  __mspabi_srll_3         
-000126ac  __mspabi_srll_2         
-000126b0  __mspabi_srll_1         
-000126b6  __mspabi_fltif          
-000126ec  i2cSetup                
-0001271e  initBTModule            
-00012750  receive                 
-0001277e  __mspabi_mpyl_f5hw      
-000127a2  transmit                
-000127c0  average                 
-000127dc  __mspabi_mpyi_f5hw      
-000127f4  go_backwards            
-0001280a  go_forward              
-00012820  sendString              
-00012836  turn_left               
-0001284c  turn_right              
-00012862  getOrientation          
-00012876  memcpy                  
-0001288a  __TI_decompress_none    
-0001289c  __mspabi_sral           
-000128ac  __mspabi_slll           
-000128bc  __mspabi_srll           
-000128cc  off                     
-000128da  sendByte                
-000128e6  __mspabi_negf           
-000128f0  startCompass            
-000128fa  C$$EXIT                 
-000128fa  abort                   
-00012900  acosf                   
-00012906  __TI_decompress_rle24   
-0001290c  doSamples               
-00012912  _system_pre_init        
-00012916  _system_post_cinit      
+000110e0  __mspabi_mpyd           
+00011362  __TI_frcaddd            
+000115b4  __mspabi_divd           
+000117d6  tallyOrientation        
+0001198c  initCompass             
+00011b2e  sqrtf                   
+00011c66  __mspabi_subf           
+00011c6c  __mspabi_addf           
+00011d98  calculateOrientation    
+00011eaa  msp430_calc_sqrt        
+00011f76  __mspabi_mpyf           
+0001202e  __TI_renormd            
+000120e0  __mspabi_divf           
+00012170  __mspabi_cvtdf          
+000121fc  _auto_init_hold_wdt     
+0001227e  __mspabi_fixfli         
+000122fc  __mspabi_cvtfd          
+0001236a  initProximitySersors    
+0001243e  __mspabi_fixfi          
+000124a6  copy_in                 
+0001250c  updateProximity         
+0001255a  __mspabi_cmpf           
+000125a4  __mspabi_fltlif         
+000125ee  __mspabi_sral_15        
+000125f2  __mspabi_sral_14        
+000125f6  __mspabi_sral_13        
+000125fa  __mspabi_sral_12        
+000125fe  __mspabi_sral_11        
+00012602  __mspabi_sral_10        
+00012606  __mspabi_sral_9         
+0001260a  __mspabi_sral_8         
+0001260e  __mspabi_sral_7         
+00012612  __mspabi_sral_6         
+00012616  __mspabi_sral_5         
+0001261a  __mspabi_sral_4         
+0001261e  __mspabi_sral_3         
+00012622  __mspabi_sral_2         
+00012626  __mspabi_sral_1         
+0001262c  __mspabi_slll_15        
+00012630  __mspabi_slll_14        
+00012634  __mspabi_slll_13        
+00012638  __mspabi_slll_12        
+0001263c  __mspabi_slll_11        
+00012640  __mspabi_slll_10        
+00012644  __mspabi_slll_9         
+00012648  __mspabi_slll_8         
+0001264c  __mspabi_slll_7         
+00012650  __mspabi_slll_6         
+00012654  __mspabi_slll_5         
+00012658  __mspabi_slll_4         
+0001265c  __mspabi_slll_3         
+00012660  __mspabi_slll_2         
+00012664  __mspabi_slll_1         
+0001266a  __mspabi_srll_15        
+0001266e  __mspabi_srll_14        
+00012672  __mspabi_srll_13        
+00012676  __mspabi_srll_12        
+0001267a  __mspabi_srll_11        
+0001267e  __mspabi_srll_10        
+00012682  __mspabi_srll_9         
+00012686  __mspabi_srll_8         
+0001268a  __mspabi_srll_7         
+0001268e  __mspabi_srll_6         
+00012692  __mspabi_srll_5         
+00012696  __mspabi_srll_4         
+0001269a  __mspabi_srll_3         
+0001269e  __mspabi_srll_2         
+000126a2  __mspabi_srll_1         
+000126a8  __mspabi_fltif          
+000126de  i2cSetup                
+00012710  initBTModule            
+00012742  receive                 
+00012770  __mspabi_mpyl_f5hw      
+00012794  transmit                
+000127b2  average                 
+000127ce  __mspabi_mpyi_f5hw      
+000127e6  go_backwards            
+000127fc  go_forward              
+00012812  sendString              
+00012828  turn_left               
+0001283e  turn_right              
+00012854  getOrientation          
+00012868  memcpy                  
+0001287c  __TI_decompress_none    
+0001288e  __mspabi_sral           
+0001289e  __mspabi_slll           
+000128ae  __mspabi_srll           
+000128be  off                     
+000128cc  sendByte                
+000128d8  __mspabi_negf           
+000128e2  startCompass            
+000128ec  C$$EXIT                 
+000128ec  abort                   
+000128f2  acosf                   
+000128f8  __TI_decompress_rle24   
+000128fe  doSamples               
+00012904  _system_pre_init        
+00012908  _system_post_cinit      
 ffffffff  __TI_pprof_out_hndl     
 ffffffff  __TI_prof_data_size     
 ffffffff  __TI_prof_data_start    
@@ -2262,4 +2259,4 @@ UNDEFED   __TI_BINIT_Limit
 UNDEFED   __TI_INITARRAY_Base     
 UNDEFED   __TI_INITARRAY_Limit    
 
-[929 symbols]
+[928 symbols]

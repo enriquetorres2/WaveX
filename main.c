@@ -67,8 +67,6 @@
 int direction;       	// 0 = forward, 1 = left, 2 = right, 3 = back, 4 = stop
 int turn;               // Turning flag, 0 turn left, 1 turn right
 int mode;               // 0 = Manual, 1 Automatic
-float orientation; 		// Boat orientation
-float newOrientation;	// New boat orientation
 
 void turn_left(){
 	P1OUT &= ~(BIT2 + BIT3);				// Clear last input
@@ -130,8 +128,6 @@ int main(void) {
 	direction = stop;
 	turn = -1; //Do not turn
 	mode = manual; //Default mode is manual
-	orientation = -1;
-	newOrientation = -1;
 
 	//Initialize all Modules
 	initBTModule(); // Bluetooth Module
@@ -139,12 +135,30 @@ int main(void) {
 	//initMultiMeter(); // Battery and Current Monitor
 	startCompass(); // Magnetometer
 
+	//Initialize switch value
+	P3DIR &= ~BIT6;
+	unsigned short toogleSwitch = P3IN & BIT6;
+
+	//Initialize Orientation variables
+	float orientation = -1; 		// Boat orientation
+	float newOrientation = -1;	// New boat orientation
+
 	_BIS_SR(GIE); // Enable Interrupts
 	P1OUT |= BIT2;   // Set system operational
 
 	//Start main program loop
 	while(1){
-		sendString("looping\n\r");
+
+		//Hardware switch
+		if(toogleSwitch != (P3IN & BIT6)){ //Toogle between modes regardless the position of the switch
+			toogleSwitch = P3IN & BIT6;
+			if(mode){
+				mode = manual;
+			}else{
+				mode = automatic;
+			}
+		}
+
 		//BLUETOOTH
 		//Receive bluetooth commands/request from the app
 		//and executes/answers
