@@ -1,7 +1,7 @@
 #include <msp430.h> 
 #define BATTERY_CONST (100/620) // Set constant value to converts volts to percent
 #define BATTERY_OFFSET 3110 // Set offset to minimum battery operation allowed
-#define CURRENT_CONST 1 // Set constant according to Ohms Law
+#define CURRENT_CONST 1 // Set constant according to Ohms Law V = IR I = V/R
 static unsigned int index;
 int battery;
 unsigned int current;

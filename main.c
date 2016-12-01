@@ -8,7 +8,7 @@
  * Wiring
  * Motors--------------------------------------------
  * RIGHT
- * P1.2 -> pruple
+ * P1.2 -> purple
  * P1.3 -> blue
  * LEFT
  * P8.2 -> grey
@@ -50,18 +50,18 @@
 #define connected 1
 #define disconnected 0
 
-#define LEDA_ON P2OUT |= BIT0;
-#define LEDB_ON P2OUT |= BIT2;
-#define LEDC_ON P4OUT |= BIT0;
-#define LEDD_ON P4OUT |= BIT3;
-#define ENABLE_BUZZ P3OUT |= BIT7;
+#define LEDA_ON P2OUT |= BIT0
+#define LEDB_ON P2OUT |= BIT2
+#define LEDC_ON P4OUT |= BIT0
+#define LEDD_ON P4OUT |= BIT3
+#define ENABLE_BUZZ P3OUT |= BIT7
 
 
-#define LEDA_OFF P2OUT &= ~BIT0;
-#define LEDB_OFF P2OUT &= ~BIT2;
-#define LEDC_OFF P4OUT &= ~BIT0;
-#define LEDD_OFF P4OUT &= ~BIT3;
-#define DISABLE_BUZZ P3OUT |= BIT7;
+#define LEDA_OFF P2OUT &= ~BIT0
+#define LEDB_OFF P2OUT &= ~BIT2
+#define LEDC_OFF P4OUT &= ~BIT0
+#define LEDD_OFF P4OUT &= ~BIT3
+#define DISABLE_BUZZ P3OUT &= ~BIT7
 
 
 int direction;       	// 0 = forward, 1 = left, 2 = right, 3 = back, 4 = stop
@@ -137,8 +137,9 @@ int main(void) {
 
 	//Initialize switch value
 	P3DIR &= ~BIT6;
+	__delay_cycles(10000); // Warm up the SYSTEM
 	unsigned short toogleSwitch = P3IN & BIT6;
-
+	unsigned short turnDir = 1;
 	//Initialize Orientation variables
 	float orientation = -1; 		// Boat orientation
 	float newOrientation = -1;	// New boat orientation
@@ -148,13 +149,16 @@ int main(void) {
 
 	//Start main program loop
 	while(1){
-
+		sendString(".");
 		//Hardware switch
 		if(toogleSwitch != (P3IN & BIT6)){ //Toogle between modes regardless the position of the switch
 			toogleSwitch = P3IN & BIT6;
 			if(mode){
+				sendString("ch to user control\n\r");
 				mode = manual;
+				direction = stop;
 			}else{
+				sendString("ch to auto\n\r");
 				mode = automatic;
 			}
 		}
@@ -163,14 +167,14 @@ int main(void) {
 		//Receive bluetooth commands/request from the app
 		//and executes/answers
 
-	//	BTBuffer = 'U';
-	//	getConnectionStatus();
-	//	__delay_cycles(200);
-	//	if(BTConnected == disconnected){//Is the bluetooth connected?
-	//		P2OUT &= ~BIT0;//Turn off Bluetooth LED   TODO
-	//	}
-//		else{// It is connected
-			P4OUT |= BIT3;// Turn on Bluetooth LED
+//		BTBuffer = 'U';
+//		//		getConnectionStatus();
+//		__delay_cycles(200);
+//		if(BTConnected == disconnected){//Is the bluetooth connected?
+//			P2OUT &= ~BIT0;//Turn off Bluetooth LED   TODO
+//		}
+		//else{// It is connected
+			LEDD_ON; // Turn on Bluetooth LED
 			// Interpretation of instruction
 			if(BTBuffer == 'm'){                   	  // Tell app what mode WaveX is in.
 				if(mode == automatic){                 // If auto display manual button
@@ -181,7 +185,7 @@ int main(void) {
 				}
 			}
 			else if(BTBuffer == 'v'){//Tell app the battery %
-				doSamples();
+				//doSamples();
 				if(battery > 80){//Is battery more than 80%?
 					sendByte('l');//If
 				}
@@ -198,36 +202,45 @@ int main(void) {
 					sendByte('g');
 				}
 				else{
-					//lowBatteryMode();
+					//lowBatteryMode;
 				}
 			}
 			if(mode == manual){//Control
+				sendString("user control select\n\r");
 				if(BTBuffer == 'w'){//Go forward?
 					direction = forward;
+					sendString("Select Forward\n\r");
 				}
 				else if(BTBuffer == 'a'){//Go left?
 					direction = left;
+					sendString("Select Left\n\r");
 				}
 				else if(BTBuffer == 's'){//Go in back?
 					direction = back;
+					sendString("Select reverse\n\r");
 				}
 				else if(BTBuffer == 'd'){//Go right?
 					direction = right;
+					sendString("Select Right\n\r");
 				}
 				else if(BTBuffer == 't'){//Stop?
 					direction = stop;
+					sendString("Select Stop\n\r");
 				}
 			}
 			if(BTBuffer == 'p'){         //Should we go into manual?
 				if(mode != manual){      //if already in manual do not stop motors
 					direction = stop;   //Stop when entering manual
+					sendString("Select Stop due user control\n\r");
 				}
 				mode = manual;           //Set mode to manual
+				sendString("Select Stop due user control\n\r");
 			}
 			else if(BTBuffer == 'o'){    //Should we go into auto?
 				mode = automatic;        //Set mode to auto
+				sendString("Go auto\n\r");
 			}
-//		}
+		//}
 
 		//NAV CONTROL
 		//Here the MCU picks which direction
@@ -238,10 +251,10 @@ int main(void) {
 			P4OUT |= BIT0;				//Turn on Mode LED
 			//Navigation algorithm
 			if(frontFlag == 1){			//The front if blocked
-				sendString("FrontFlag\n\r");
+				sendString("FFlag - get orie.\n\r");
 				orientation = getOrientation();
 				newOrientation = orientation;
-				sendString("Got orientation\n\r");
+				sendString("Got orie.\n\r");
 				if(leftFlag == 1){		//The left is blocked
 					sendString("LeftFlag\n\r");
 					direction = right;
@@ -251,37 +264,49 @@ int main(void) {
 					direction = left;
 				}
 				else{					//Neither side is blocked
-					sendString("default turn\n\r");
-					direction = left;
+					sendString("default t.\n\r");
+					if(turn){
+						direction = left;
+						turn = 0;
+					}else{
+						direction = right;
+						turn = 1;
+					}
 				}
 			}
-			else{						//Nothing blocking the way keep going
+			else{ //Nothing blocking the way keep going
 				direction = forward;
+				sendString("keep go\n\r");
 			}
 		}
 		if(direction == forward){		//Do we go forward?
 			//Power Both Engines
 			go_forward();
+			sendString("go_forward\n\r");
 		}
 		else if(direction == back){		//Do go back?
 			//Shutdown both engines
 			go_backwards();
+			sendString("go_reverse\n\r");
 		}
 		else if(direction == stop){		//Do we stop?
 			//Shutdown both engines
 			off();
+			sendString("stop\n\r");
 		}
 		else if(direction == left || direction == right){//Do we turn?
 			if(direction == left){						//Do we turn left?
 				//Shutdown left engine
 				turn_left();
+				sendString("t_left\n\r");
 			}
 			else{//We turn right
 				//Shutdown right engine
 				turn_right();
+				sendString("t_right\n\r");
 			}
-			if(orientation > -1){
-				sendString("Entered 180 degree turn\n\r");
+			if((orientation > -1) && (mode) ){
+				sendString("E 180 degree t\n\r");
 				int turnDeg = newOrientation - orientation;
 				while(turnDeg < 170){
 					newOrientation = getOrientation();
@@ -289,12 +314,14 @@ int main(void) {
 					if(turnDeg < 0){
 						turnDeg = -1*turnDeg;
 					}
+					if(BTBuffer == 'p') break;
 				}
+				orientation = -1;
+				newOrientation = -1;
+				direction = forward;
+				sendString("Ex 180 degree t\n\r");
 			}
-			orientation = -1;
-			newOrientation = -1;
-			direction = forward;
-			sendString("Exited 180 degree turn\n\r");
+
 		}
 	}
 }

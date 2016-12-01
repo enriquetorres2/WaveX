@@ -54,10 +54,9 @@ void initBTModule(){
 //		                                      // MCLK = default DCO
 
 	UCA0CTL1 |= UCSWRST;                      // **Put state machine in reset**
-	UCA0CTL1 |= UCSSEL_1;                     // CLK = ACLK
-	UCA0BR0 = 0x03;                           // 32kHz/9600=3.41 (see User's Guide)
-	UCA0BR1 = 0x00;                           //
-	UCA0MCTL = UCBRS_3+UCBRF_0;               // Modulation UCBRSx=3, UCBRFx=0
+	UCA0CTL1 |= UCSSEL_2;                     // CLK = SMCLK
+	UCA0BR0 = 0x6D;                           // 1048576Hz/9600=109.2 (see User's Guide)
+	UCA0MCTL = UCBRS_2+UCBRF_0;               // Modulation UCBRSx=2, UCBRFx=0
 	UCA0CTL1 &= ~UCSWRST;                     // **Initialize USCI state machine**
 	UCA0IE |= UCRXIE;                         // Enable USCI_A0 RX interrupt
 }

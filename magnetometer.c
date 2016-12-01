@@ -50,7 +50,7 @@ void i2cSetup(){
 	UCB0CTL1 = UCSSEL_2 + UCSWRST;            // Use SMCLK, keep SW reset
 	UCB0BR0 = 12;                             // fSCL = SMCLK/12 = ~100kHz
 	UCB0BR1 = 0;
-	UCB0I2CSA = 0x68;                         // Slave Address is 12 for magnet
+	UCB0I2CSA = 0x68;                         // Default Slave Address for MPU
 	UCB0CTL1 &= ~UCSWRST;                     // Clear SW reset, resume operation
 	UCB0IE |= UCRXIE + UCTXIE;
 
@@ -256,6 +256,7 @@ void calculateOrientation(){
 	else orientation = -1.0*acosf(mx*nm);
 	if(orientation == NAN) orientation = 0.0;
 	else orientation = orientation *RADIAN_DEGREES_FACTOR;
+	orientation += 180;
 }
 
 void startCompass(){

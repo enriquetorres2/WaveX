@@ -1,5 +1,5 @@
 #include <msp430.h>
-#define FRONT_RANGE 18
+#define FRONT_RANGE 36
 #define SIDE_RANGE 9
 /*
  * proximity.c
@@ -24,7 +24,7 @@ void initProximitySersors(){
 
 	// Configure PWM signal for triggering proximity sensor
 	P1SEL |= BIT5; // Prepare pin for PWM output (P1.5)
-	TA0CCR0 = 65535; // 4Hz signal
+	TA0CCR0 = 16383; // 64Hz signal
 	TA0CCTL0 |= CCIE; // Set interrupt for refreshing values
 	TA0CCTL4 |= OUTMOD_7; // Set PWM output to pin
 	TA0CCR4 = 1; // Set Pulse Width to ~10ns
